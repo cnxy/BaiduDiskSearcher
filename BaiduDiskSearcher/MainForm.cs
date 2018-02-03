@@ -160,13 +160,13 @@ namespace BaiduDiskSearcher
 
         private void 复制文件名ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(this.dataGridView.Rows[currIndex].Cells[2].Value != null && !string.IsNullOrEmpty(this.dataGridView.Rows[currIndex].Cells[2].Value.ToString()))
+            if (list[currIndex].FileNameExt != null)
             {
-                Clipboard.SetText(this.dataGridView.Rows[currIndex].Cells[1].Value.ToString() + "." + this.dataGridView.Rows[currIndex].Cells[2].Value.ToString());
+                Clipboard.SetText(list[currIndex].FileName + "." + list[currIndex].FileNameExt);
             }
             else
             {
-                Clipboard.SetText(this.dataGridView.Rows[currIndex].Cells[1].Value.ToString());
+                Clipboard.SetText(list[currIndex].FileName);
             }
         }
 
@@ -176,7 +176,7 @@ namespace BaiduDiskSearcher
             if (this.dataGridView.CurrentRow != null && this.dataGridView.CurrentRow.Index != -1)
             {
                 contextMenuStrip.Enabled = true;
-                currIndex = this.dataGridView.CurrentRow.Index;
+                currIndex = (int)this.dataGridView.Rows[this.dataGridView.CurrentRow.Index].Cells[0].Value - 1;
             }
             else
             {
@@ -240,6 +240,19 @@ namespace BaiduDiskSearcher
             {
                 buttonSearch.PerformClick();
             }
+        }
+
+        private void dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.RowIndex != -1)
+            {
+                Process.Start(list[(int)this.dataGridView.Rows[e.RowIndex].Cells[0].Value - 1].Site);
+            }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            labelVersion.Text = $"版本：{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
         }
     }
 }

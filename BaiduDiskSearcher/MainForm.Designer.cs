@@ -60,6 +60,7 @@
             this.labelProcess = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.labelCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
@@ -160,6 +161,7 @@
             this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView.Size = new System.Drawing.Size(1044, 514);
             this.dataGridView.TabIndex = 1;
+            this.dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellDoubleClick);
             // 
             // ColumnNumber
             // 
@@ -301,7 +303,8 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.labelProcess,
             this.progressBar,
-            this.labelCount});
+            this.labelCount,
+            this.labelVersion});
             this.statusStrip.Location = new System.Drawing.Point(0, 517);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1044, 22);
@@ -324,6 +327,14 @@
             this.labelCount.Name = "labelCount";
             this.labelCount.Size = new System.Drawing.Size(0, 17);
             // 
+            // labelVersion
+            // 
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(795, 17);
+            this.labelVersion.Spring = true;
+            this.labelVersion.Text = "版本";
+            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -337,6 +348,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "百度网盘搜索工具";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
@@ -379,6 +391,7 @@
         private System.Windows.Forms.ToolStripMenuItem 复制分享者主页ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel labelVersion;
     }
 }
 
