@@ -38,9 +38,8 @@ namespace BaiduDiskSearcher
             handler = new WebHandler($"http://m.panduoduo.net/s/name/{textBoxKeyword.Text}");
             handler.PageShown += Handler_PageShown;
             handler.ItemShown += Handler_ItemShown;
-            list.Clear();
-            dataGridView.Rows.Clear();
-            rowIndex = 0;
+            dataTable = new ItemDataTable();
+            dataGridView.DataSource = dataTable.GetItems();
             labelCount.Text = "";
             progressBar.Value = 0;
             cts = new CancellationTokenSource();
@@ -51,7 +50,7 @@ namespace BaiduDiskSearcher
                 handler.Handle();
                 InvokeToForm(() =>
                 {
-                    labelCount.Text = "已完成";
+                    if(!cts.IsCancellationRequested) labelCount.Text = "已完成";
                     buttonSearch.Enabled = true;
                     buttonStop.Enabled = false;
                 });
@@ -65,40 +64,24 @@ namespace BaiduDiskSearcher
                 progressBar.Maximum = e.Page.TotalNumber;
             });
         }
-
-       List <Item> list = new List<Item>();
+        ItemDataTable dataTable = new ItemDataTable();
         CancellationTokenSource cts ;
         int rowIndex;
         private void Handler_ItemShown(object sender, ItemEventArgs e)
         {
             InvokeToForm(() => 
             {
-                list.Add(e.Item);
-                try
+                rowIndex = dataTable.Add(e.Item);
+                progressBar.Value = rowIndex;
+                if (rowIndex != progressBar.Maximum)
                 {
-                    this.dataGridView.Rows.Add();
-                    this.dataGridView.Rows[rowIndex].Cells[0].Value = rowIndex + 1;
-                    this.dataGridView.Rows[rowIndex].Cells[1].Value = e.Item.FileName;
-                    this.dataGridView.Rows[rowIndex].Cells[2].Value = e.Item.FileNameExt;
-                    this.dataGridView.Rows[rowIndex].Cells[3].Value = e.Item.Type;
-                    this.dataGridView.Rows[rowIndex].Cells[4].Value = e.Item.Time;
-                    this.dataGridView.Rows[rowIndex].Cells[5].Value = e.Item.Size;
-                    this.dataGridView.Rows[rowIndex].Cells[6].Value = e.Item.Sharer;
-                    this.dataGridView.Rows[rowIndex].Cells[7].Value = e.Item.Site;
-                    rowIndex++;
-                    progressBar.Value = rowIndex;
-
-                    if (rowIndex != progressBar.Maximum)
-                    {
-                        labelCount.Text = $"{rowIndex}/{progressBar.Maximum}";
-                    }
-                    e.Cancel = cts.IsCancellationRequested;
-                    if (e.Cancel)
-                    {
-                        labelCount.Text = "已取消";
-                    }
+                    labelCount.Text = $"{rowIndex}/{progressBar.Maximum}";
                 }
-                catch { }
+                e.Cancel = cts.IsCancellationRequested;
+                if (e.Cancel)
+                {
+                    labelCount.Text = "已取消";
+                }
             });
         }
 
@@ -124,9 +107,9 @@ namespace BaiduDiskSearcher
                 if(dialog.ShowDialog() == DialogResult.OK)
                 {
                     StringBuilder temp = new StringBuilder();
-                    for (int i=0;i< this.dataGridView.Columns.Count;i++)
+                    for (int i = 0 ;i< this.dataGridView.Columns.Count - 1;i++)
                     {
-                        if(i != this.dataGridView.Columns.Count -1)
+                        if(i != this.dataGridView.Columns.Count - 2)
                         {
                             temp.Append(this.dataGridView.Columns[i].HeaderText + ",");
                         }
@@ -135,19 +118,12 @@ namespace BaiduDiskSearcher
                             temp.Append(this.dataGridView.Columns[i].HeaderText + "\r\n");
                         }
                     }
-                    
-                    for (int i=0;i<dataGridView.Rows.Count;i++)
+                    Item[] items = dataTable.GetItems(out int[] counts);
+                    for(int i = 0;i<items.Length; i++)
                     {
-                        temp.Append(this.dataGridView.Rows[i].Cells[0].Value + "," +
-                            this.dataGridView.Rows[i].Cells[1].Value.ToString().Replace(",", "，") + "," +
-                            this.dataGridView.Rows[i].Cells[2].Value + "," +
-                            this.dataGridView.Rows[i].Cells[3].Value + "," +
-                            this.dataGridView.Rows[i].Cells[4].Value + "," +
-                            this.dataGridView.Rows[i].Cells[5].Value + "," +
-                            this.dataGridView.Rows[i].Cells[6].Value + "," +
-                            this.dataGridView.Rows[i].Cells[7].Value + "\r\n");
+                        temp.Append(counts[i] + "," + items[i].FileName.Replace(",", "，") + "," + items[i].FileNameExt + "," +
+                           items[i].Type + "," + items[i].Time+ "," + items[i].Size + "," + items[i].Sharer + "," + items[i].Site + "\r\n");
                     }
-
                     StreamWriter writer = new StreamWriter(dialog.FileName,false,Encoding.UTF8);
                     writer.Write(temp.ToString());
                     writer.Close();
@@ -155,28 +131,34 @@ namespace BaiduDiskSearcher
                 }
             }
         }
-
     
-
         private void 复制文件名ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (list[currIndex].FileNameExt != null)
+            if (currItem.FileNameExt != null)
             {
-                Clipboard.SetText(list[currIndex].FileName + "." + list[currIndex].FileNameExt);
+                Clipboard.SetText(currItem.FileName + "." + currItem.FileNameExt);
             }
             else
             {
-                Clipboard.SetText(list[currIndex].FileName);
+                Clipboard.SetText(currItem.FileName);
             }
         }
 
-        int currIndex;
+        Item currItem;
         private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             if (this.dataGridView.CurrentRow != null && this.dataGridView.CurrentRow.Index != -1)
             {
                 contextMenuStrip.Enabled = true;
-                currIndex = (int)this.dataGridView.Rows[this.dataGridView.CurrentRow.Index].Cells[0].Value - 1;
+                if(!buttonSearch.Enabled)
+                {
+                    清空ToolStripMenuItem.Enabled = false;
+                }
+                else
+                {
+                    清空ToolStripMenuItem.Enabled = true;
+                }
+                currItem = ((Item)((DataRowView)this.dataGridView.Rows[this.dataGridView.CurrentRow.Index].DataBoundItem).Row.ItemArray[8]);
             }
             else
             {
@@ -186,39 +168,44 @@ namespace BaiduDiskSearcher
 
         private void 打开网盘地址ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (list[currIndex].Site != null)
+            if (currItem.Site != null)
             {
-                Process.Start(list[currIndex].Site);
+                Process.Start(currItem.Site);
             }
         }
 
         private void 复制网盘地址ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(list[currIndex].Site != null)
+            if (currItem.Site != null)
             {
-                Clipboard.SetText(list[currIndex].Site);
+                Clipboard.SetText(currItem.Site);
             }
         }
 
         private void 打开分享者主页ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (list[currIndex].SharerSite != null)
+            if (currItem.SharerSite != null)
             {
-                Process.Start(list[currIndex].SharerSite);
+                Process.Start(currItem.SharerSite);
             }
         }
 
         private void 复制分享者主页ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (list[currIndex].SharerSite != null)
+            if (currItem.SharerSite != null)
             {
-                Clipboard.SetText(list[currIndex].SharerSite);
+                Clipboard.SetText(currItem.SharerSite);
             }
         }
 
         private void 清空ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.dataGridView.Rows.Clear();
+            for(int i= this.dataGridView.Rows.Count-1; i>=0; i--)
+            {
+                this.dataGridView.Rows.RemoveAt(i);
+            }
+            labelCount.Text = "";
+            progressBar.Value = 0;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -246,7 +233,8 @@ namespace BaiduDiskSearcher
         {
             if(e.RowIndex != -1)
             {
-                Process.Start(list[(int)this.dataGridView.Rows[e.RowIndex].Cells[0].Value - 1].Site);
+                Item item = ((Item)((DataRowView)this.dataGridView.Rows[this.dataGridView.CurrentRow.Index].DataBoundItem).Row.ItemArray[8]);
+                Process.Start(item.Site);
             }
         }
 

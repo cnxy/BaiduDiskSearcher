@@ -39,14 +39,6 @@
             this.buttonExport = new System.Windows.Forms.ToolStripButton();
             this.buttonAbout = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.ColumnNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFileNameExt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSharer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSite = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.复制文件名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -61,6 +53,15 @@
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.labelCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.labelVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ColumnNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnFileNameExt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSharer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSite = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnItem = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
@@ -150,7 +151,8 @@
             this.ColumnTime,
             this.ColumnSize,
             this.ColumnSharer,
-            this.ColumnSite});
+            this.ColumnSite,
+            this.ColumnItem});
             this.dataGridView.ContextMenuStrip = this.contextMenuStrip;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.Location = new System.Drawing.Point(0, 25);
@@ -158,78 +160,10 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.RowTemplate.Height = 23;
-            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView.Size = new System.Drawing.Size(1044, 514);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellDoubleClick);
-            // 
-            // ColumnNumber
-            // 
-            this.ColumnNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnNumber.HeaderText = "序号";
-            this.ColumnNumber.MinimumWidth = 60;
-            this.ColumnNumber.Name = "ColumnNumber";
-            this.ColumnNumber.ReadOnly = true;
-            this.ColumnNumber.Width = 60;
-            // 
-            // ColumnFileName
-            // 
-            this.ColumnFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnFileName.HeaderText = "文件名";
-            this.ColumnFileName.MinimumWidth = 300;
-            this.ColumnFileName.Name = "ColumnFileName";
-            this.ColumnFileName.ReadOnly = true;
-            this.ColumnFileName.Width = 300;
-            // 
-            // ColumnFileNameExt
-            // 
-            this.ColumnFileNameExt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnFileNameExt.HeaderText = "拓展名";
-            this.ColumnFileNameExt.MinimumWidth = 70;
-            this.ColumnFileNameExt.Name = "ColumnFileNameExt";
-            this.ColumnFileNameExt.ReadOnly = true;
-            this.ColumnFileNameExt.Width = 70;
-            // 
-            // ColumnType
-            // 
-            this.ColumnType.HeaderText = "类别";
-            this.ColumnType.MinimumWidth = 60;
-            this.ColumnType.Name = "ColumnType";
-            this.ColumnType.ReadOnly = true;
-            this.ColumnType.Width = 60;
-            // 
-            // ColumnTime
-            // 
-            this.ColumnTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnTime.HeaderText = "时间";
-            this.ColumnTime.MinimumWidth = 120;
-            this.ColumnTime.Name = "ColumnTime";
-            this.ColumnTime.ReadOnly = true;
-            this.ColumnTime.Width = 120;
-            // 
-            // ColumnSize
-            // 
-            this.ColumnSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnSize.HeaderText = "大小";
-            this.ColumnSize.MinimumWidth = 100;
-            this.ColumnSize.Name = "ColumnSize";
-            this.ColumnSize.ReadOnly = true;
-            // 
-            // ColumnSharer
-            // 
-            this.ColumnSharer.HeaderText = "分享者";
-            this.ColumnSharer.MinimumWidth = 120;
-            this.ColumnSharer.Name = "ColumnSharer";
-            this.ColumnSharer.ReadOnly = true;
-            this.ColumnSharer.Width = 120;
-            // 
-            // ColumnSite
-            // 
-            this.ColumnSite.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnSite.HeaderText = "地址";
-            this.ColumnSite.MinimumWidth = 200;
-            this.ColumnSite.Name = "ColumnSite";
-            this.ColumnSite.ReadOnly = true;
             // 
             // contextMenuStrip
             // 
@@ -335,6 +269,90 @@
             this.labelVersion.Text = "版本";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // ColumnNumber
+            // 
+            this.ColumnNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnNumber.DataPropertyName = "ID";
+            this.ColumnNumber.HeaderText = "序号";
+            this.ColumnNumber.MinimumWidth = 60;
+            this.ColumnNumber.Name = "ColumnNumber";
+            this.ColumnNumber.ReadOnly = true;
+            this.ColumnNumber.Width = 60;
+            // 
+            // ColumnFileName
+            // 
+            this.ColumnFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnFileName.DataPropertyName = "FileName";
+            this.ColumnFileName.HeaderText = "文件名";
+            this.ColumnFileName.MinimumWidth = 300;
+            this.ColumnFileName.Name = "ColumnFileName";
+            this.ColumnFileName.ReadOnly = true;
+            this.ColumnFileName.Width = 300;
+            // 
+            // ColumnFileNameExt
+            // 
+            this.ColumnFileNameExt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnFileNameExt.DataPropertyName = "FileNameExt";
+            this.ColumnFileNameExt.HeaderText = "拓展名";
+            this.ColumnFileNameExt.MinimumWidth = 70;
+            this.ColumnFileNameExt.Name = "ColumnFileNameExt";
+            this.ColumnFileNameExt.ReadOnly = true;
+            this.ColumnFileNameExt.Width = 70;
+            // 
+            // ColumnType
+            // 
+            this.ColumnType.DataPropertyName = "Type";
+            this.ColumnType.HeaderText = "类别";
+            this.ColumnType.MinimumWidth = 60;
+            this.ColumnType.Name = "ColumnType";
+            this.ColumnType.ReadOnly = true;
+            this.ColumnType.Width = 60;
+            // 
+            // ColumnTime
+            // 
+            this.ColumnTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnTime.DataPropertyName = "Time";
+            this.ColumnTime.HeaderText = "时间";
+            this.ColumnTime.MinimumWidth = 120;
+            this.ColumnTime.Name = "ColumnTime";
+            this.ColumnTime.ReadOnly = true;
+            this.ColumnTime.Width = 120;
+            // 
+            // ColumnSize
+            // 
+            this.ColumnSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnSize.DataPropertyName = "Size";
+            this.ColumnSize.HeaderText = "大小";
+            this.ColumnSize.MinimumWidth = 100;
+            this.ColumnSize.Name = "ColumnSize";
+            this.ColumnSize.ReadOnly = true;
+            // 
+            // ColumnSharer
+            // 
+            this.ColumnSharer.DataPropertyName = "Sharer";
+            this.ColumnSharer.HeaderText = "分享者";
+            this.ColumnSharer.MinimumWidth = 120;
+            this.ColumnSharer.Name = "ColumnSharer";
+            this.ColumnSharer.ReadOnly = true;
+            this.ColumnSharer.Width = 120;
+            // 
+            // ColumnSite
+            // 
+            this.ColumnSite.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnSite.DataPropertyName = "Site";
+            this.ColumnSite.HeaderText = "地址";
+            this.ColumnSite.MinimumWidth = 200;
+            this.ColumnSite.Name = "ColumnSite";
+            this.ColumnSite.ReadOnly = true;
+            // 
+            // ColumnItem
+            // 
+            this.ColumnItem.DataPropertyName = "Item";
+            this.ColumnItem.HeaderText = "Item";
+            this.ColumnItem.Name = "ColumnItem";
+            this.ColumnItem.ReadOnly = true;
+            this.ColumnItem.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -374,14 +392,6 @@
         private System.Windows.Forms.ToolStripStatusLabel labelProcess;
         private System.Windows.Forms.ToolStripProgressBar progressBar;
         private System.Windows.Forms.ToolStripStatusLabel labelCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileNameExt;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSize;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSharer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSite;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem 复制文件名ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
@@ -392,6 +402,15 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel labelVersion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileNameExt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSharer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSite;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnItem;
     }
 }
 
