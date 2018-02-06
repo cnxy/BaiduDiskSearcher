@@ -241,6 +241,7 @@ namespace BaiduDiskSearcher
         private void MainForm_Load(object sender, EventArgs e)
         {
             labelVersion.Text = $"版本：{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+            textBoxKeyword.Focus();
         }
     }
 }
